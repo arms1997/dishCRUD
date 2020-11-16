@@ -1,25 +1,32 @@
-const express = require('express')
-const app = express()
-const cors = require('cors')
-const mongoose = require('mongoose')
+const express = require("express");
+const app = express();
+const cors = require("cors");
+const mongoose = require("mongoose");
+const dishRouter = require("./routes/dishes");
+const path = require('path');
+const public = path.join(__dirname, 'public');
 
-const dishRouter = require('./routes/dishes')
+app.use(express.static('views'))
 
-app.use(cors())
+app.use(cors());
 app.use(express.json())
+app.use(express.urlencoded());
+
+app.set("view engine", "ejs");
 
 const port = process.env.PORT || 3000;
 
-const url = 'mongodb://127.0.0.1:27017/dishCRUD'
-mongoose.connect(url, {useNewUrlParser: true})
+const url = "mongodb://127.0.0.1:27017/dishCRUD";
+mongoose.connect(url, { useNewUrlParser: true });
 
 const connection = mongoose.connection;
-connection.once('open', ()=>{
-  console.log('db succesfully connected')
-})
+connection.once("open", () => {
+  console.log("db succesfully connected");
+});
 
-app.use('/', dishRouter)
+app.use("/", dishRouter);
+
 
 app.listen(port, () => {
-  console.log(`listening on ${port}`)
-})
+  console.log(`listening on ${port}`);
+});

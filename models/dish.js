@@ -8,6 +8,9 @@ const dishSchema = new Schema({
     required: true,
     trim: true,
     minlength: 3
+  },
+  dishImage: {
+    type: String,
   }
 })
 

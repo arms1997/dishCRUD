@@ -1,20 +1,38 @@
 const router = require("express").Router();
 const Dish = require("../models/dish");
+const multer = require("multer");
+const upload = multer({
+  dest: "C:/Users/Arms/Desktop/code/dishCRUD/foodImages",
+});
+const fs = require("fs");
 
 router.get("/", (req, res) => {
   Dish.find()
-    .then((dishes) => res.json(dishes))
+    .then((dishes) => res.render("pages/index", { dishes: dishes }))
     .catch((err) => res.status(400).json("Error" + err));
 });
 
-router.post("/", (req, res) => {
+router.get("/add", (req, res) => {
+  res.render("pages/addDish", { success: false });
+});
+
+router.post("/", upload.single("dishImage"), (req, res) => {
+  let newPath = `../foodImages/${req.file.originalname}`;
+
+  console.log(newPath)
+
+  fs.rename(req.file.path, newPath, (err) => {
+    if (err) return handleError(err, res);
+  });
+
   const dish = new Dish({
-    name: req.body.name,
+    name: req.body.dishName,
+    dishImage: newPath
   });
 
   dish
     .save()
-    .then(() => res.json("New Dish Added!"))
+    .then(() => res.render("pages/addDish", { success: true }))
     .catch((err) => res.status(400).json("Error " + err));
 });
 

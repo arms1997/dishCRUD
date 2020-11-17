@@ -9,19 +9,26 @@
     <main>
       <div class="card jumbotron">
         <% if(success){%>
-        <div class="card text-white bg-success" style="margin-bottom: 5em; max-width: 50%;">
-          <div class="card-body">
-            New Dish has been Added!
-          </div>
+        <div
+          class="card text-white bg-success"
+          style="margin-bottom: 5em; max-width: 50%"
+        >
+          <div class="card-body">New Dish has been Added!</div>
         </div>
         <%}%>
 
         <h4 style="margin-bottom: 30px">Add a Dish!</h4>
         <form action="/" method="POST" enctype="multipart/form-data">
-          <label for="dishName" style="margin: 10px;">Dish Name:</label>
-          <input type="text" name="dishName" style="margin: 10px;"/> <br>
-          <input type="file" name="dishImage" style="margin: 10px;"/><br>
-          <input type="submit" value="Submit" style="margin: 10px;"/>
+          <label for="dishName" style="margin: 10px">Dish Name:</label>
+          <input type="text" name="dishName" style="margin: 10px" /> <br />
+          <label for="dishImaage" style="margin: 10px">Dish Image:</label>
+          <input type="file" name="dishImage" style="margin: 10px" /><br />
+          <input
+            class="btn btn-outline-dark"
+            type="submit"
+            value="Submit"
+            style="margin: 10px"
+          />
         </form>
       </div>
     </main>

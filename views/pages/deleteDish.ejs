@@ -4,17 +4,56 @@
   </head>
 
   <body>
-    
-    <header>
-      <%- include('../partials/header'); %> 
-    </header>
+    <header><%- include('../partials/header'); %></header>
 
     <main>
       <div class="jumbotron">
-        
-      </div>
-      
-    </main>
+        <h4>Delete a Dish!</h4>
+        <div>
+          <select
+            class="custom-select"
+            style="margin-top: 20px"
+            id="deleteList"
+          >
+            <option selected>Pick a dish to delete</option>
+            <% dishes.forEach(function(dish){ %>
 
+            <option value="<%=dish._id%>"><%=dish.name%></option>
+
+            <%}); %>
+          </select>
+          <button
+            type="button"
+            class="btn btn-outline-dark"
+            id="deleteBtn"
+            style="margin-top: 20px"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+      <script>
+        document.getElementById("deleteBtn").addEventListener("click", () => {
+          let deletedItem = document.getElementById("deleteList");
+          if (deletedItem.selectedIndex == 0) {
+            alert("please select an option");
+          } else {
+            var selectedText =
+              deletedItem.options[deletedItem.selectedIndex].value;
+
+            fetch("/" + selectedText, {
+              method: "DELETE",
+            })
+              .then((res) => {
+                if (res.status === 200) {
+                  alert("Succefully Deleted");
+                  location.reload();
+                }
+              })
+              .catch((err) => console.log("Error: " + err));
+          }
+        });
+      </script>
+    </main>
   </body>
 </html>

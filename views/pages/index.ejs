@@ -3,34 +3,34 @@
     <%- include('../partials/head'); %>
   </head>
 
-  <body>
-    
-    <header>
-      <%- include('../partials/header'); %> 
-    </header>
+  <body style="margin: 0">
+    <header><%- include('../partials/header'); %></header>
 
     <main>
       <div class="jumbotron">
         <h4>Welcome to Dish CRUD</h4>
         <ul>
           <% dishes.forEach(function(dish){ %>
-            <!-- <li>
-              <strong><%= dish.name %></strong>
-              <img src="chicken_curry.jpg" />
-            </li> -->
-            <div class="card flex-row flex-wrap" style="margin-bottom: 10px;">
-              <div class="card-header border-0">
-                  <img src="<%=dish.dishImage %>" alt="" style="min-height: 100px; max-width: 100px; min-width: 100px; max-height: 100px;" >
-              </div>
-              <div class="card-block px-2" style="margin: auto;">
-                  <h4 class="card-title"><%= dish.name %></h4>
-              </div>
+          <div class="card flex-row flex-wrap" style="margin-bottom: 10px">
+            <div class="card-header border-0">
+              <img
+                src="<%=dish.dishImage %>"
+                alt="<%=dish.name%>"
+                style="
+                  min-height: 100px;
+                  max-width: 100px;
+                  min-width: 100px;
+                  max-height: 100px;
+                "
+              />
+            </div>
+            <div class="card-block px-2" style="margin: auto">
+              <h4 class="card-title"><%= dish.name %></h4>
+            </div>
           </div>
           <%}); %>
         </ul>
       </div>
-      
     </main>
-
   </body>
 </html>

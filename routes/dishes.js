@@ -17,13 +17,17 @@ router.get("/add", (req, res) => {
 });
 
 router.post("/", upload.single("dishImage"), (req, res) => {
+  let path;
+
   if (req.file !== undefined) {
     saveImage(req.file)
+
+    path = `../foodImages/${req.file.originalname}`
   }
 
   const dish = new Dish({
     name: req.body.dishName,
-    dishImage: `../foodImages/${req.file.originalname}`,
+    dishImage: path,
   });
 
   dish
@@ -35,7 +39,6 @@ router.post("/", upload.single("dishImage"), (req, res) => {
 router.get("/delete", (req, res) => {
   Dish.find()
     .then((dishes) => {
-      console.log(dishes);
       res.render("pages/deleteDish", { dishes: dishes });
     })
     .catch((err) => res.status(400).json("Error" + err));

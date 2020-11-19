@@ -17,20 +17,15 @@ router.get("/add", (req, res) => {
 });
 
 router.post("/", upload.single("dishImage"), (req, res) => {
-  let newPath = "";
+  let path;
+  
   if (req.file !== undefined) {
-    newPath = `../foodImages/${req.file.originalname}`;
-
-    console.log(newPath);
-
-    fs.rename(req.file.path, newPath, (err) => {
-      if (err) return handleError(err, res);
-    });
+    path = saveImage(req.file)
   }
 
   const dish = new Dish({
     name: req.body.dishName,
-    dishImage: newPath,
+    dishImage: path,
   });
 
   dish
@@ -53,5 +48,17 @@ router.delete("/:id", (req, res) => {
     .then(() => res.json("Dish with given ID has been deleted"))
     .catch((err) => res.status(400).json("Error " + err));
 });
+
+const saveImage = (file) => {
+  let newPath = "";
+
+  newPath = `../foodImages/${file.originalname}`;
+
+  fs.rename(file.path, newPath, (err) => {
+    if (err) return handleError(err, res);
+  });
+
+  return newPath
+};
 
 module.exports = router;

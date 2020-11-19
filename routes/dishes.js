@@ -2,7 +2,7 @@ const router = require("express").Router();
 const Dish = require("../models/dish");
 const multer = require("multer");
 const upload = multer({
-  dest: "C:/Users/Arms/Desktop/code/dishCRUD/foodImages",
+  dest: "C:/Users/Arms/Desktop/code/dishCRUD/views/foodImages",
 });
 const fs = require("fs");
 
@@ -17,15 +17,13 @@ router.get("/add", (req, res) => {
 });
 
 router.post("/", upload.single("dishImage"), (req, res) => {
-  let path;
-  
   if (req.file !== undefined) {
-    path = saveImage(req.file)
+    saveImage(req.file)
   }
 
   const dish = new Dish({
     name: req.body.dishName,
-    dishImage: path,
+    dishImage: `../foodImages/${req.file.originalname}`,
   });
 
   dish
@@ -52,13 +50,11 @@ router.delete("/:id", (req, res) => {
 const saveImage = (file) => {
   let newPath = "";
 
-  newPath = `../foodImages/${file.originalname}`;
+  newPath = `views/foodImages/${file.originalname}`;
 
   fs.rename(file.path, newPath, (err) => {
-    if (err) return handleError(err, res);
+    if (err) return console.log(err)
   });
-
-  return newPath
 };
 
 module.exports = router;

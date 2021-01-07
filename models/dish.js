@@ -11,6 +11,14 @@ const dishSchema = new Schema({
   },
   dishImage: {
     type: String,
+  },
+  ingredients: {
+    type: Array,
+    required: true
+  },
+  dishInformation:{
+    type: Map,
+
   }
 })
 

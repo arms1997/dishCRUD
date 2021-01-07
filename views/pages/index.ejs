@@ -8,7 +8,22 @@
 
     <main>
       <div class="jumbotron">
-        <h4>Welcome to Dish CRUD</h4>
+        <div class="justify-content-between">
+          <h4>Welcome to Dish CRUD</h4>
+          <form class="form-inline float-right" action="/ingredients" >
+            <input
+              class="form-control mr-sm-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              name="ingredients"
+            />
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+              Search
+            </button>
+          </form>
+        </div>
+
         <ul>
           <% dishes.forEach(function(dish){ %>
           <div class="card flex-row flex-wrap" style="margin-bottom: 10px">
@@ -24,8 +39,9 @@
                 "
               />
             </div>
-            <div class="card-block px-2" style="margin: auto">
+            <div class="card-block px-2">
               <h4 class="card-title"><%= dish.name %></h4>
+              <p class="card-text">Ingredients: <%= dish.ingredients %></p>
             </div>
           </div>
           <%}); %>

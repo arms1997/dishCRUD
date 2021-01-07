@@ -12,6 +12,33 @@ router.get("/", (req, res) => {
     .catch((err) => res.status(400).json("Error" + err));
 });
 
+router.get("/ingredients", (req, res) => {
+  let requestedIngredients = req.query.ingredients
+    .replace(/\s*,\s*/g, ",")
+    .toLowerCase()
+    .split(",");
+
+  Dish.find({
+    ingredientsLength: {$lte: requestedIngredients.length}
+  }).then((dishes) => {
+    let arr = [];
+    dishes.forEach((dish) => {
+      let ingredientChecker = [...requestedIngredients]
+
+      let value = dish.ingredients.every((ingredient) => {
+        let ingredientIndex = ingredientChecker.indexOf(ingredient)
+        if(ingredientIndex !== -1){
+          ingredientChecker.splice(ingredientIndex, 1)
+          return true
+        }
+      });
+
+      if (value) arr.push(dish);
+    });
+    res.render("pages/index", { dishes: arr });
+  });
+});
+
 router.get("/add", (req, res) => {
   res.render("pages/addDish", { success: false });
 });
@@ -20,14 +47,23 @@ router.post("/", upload.single("dishImage"), (req, res) => {
   let path;
 
   if (req.file !== undefined) {
-    saveImage(req.file)
+    saveImage(req.file);
 
-    path = `../foodImages/${req.file.originalname}`
+    path = `../foodImages/${req.file.originalname}`;
   }
+  let ingredients = req.body.ingredients
+    .replace(/\s*,\s*/g, ",")
+    .toLowerCase()
+    .split(",");
+
+  let obj = {}
+
 
   const dish = new Dish({
     name: req.body.dishName,
     dishImage: path,
+    ingredients: ingredients,
+    ingredientsLength: ingredients.length
   });
 
   dish
@@ -56,7 +92,7 @@ const saveImage = (file) => {
   newPath = `views/foodImages/${file.originalname}`;
 
   fs.rename(file.path, newPath, (err) => {
-    if (err) return console.log(err)
+    if (err) return console.log(err);
   });
 };
 
